@@ -149,13 +149,7 @@ void serverToClient(cybozu::Socket& soc, const SecretKey& sec, const Precomputed
 	tm.begin("re-enc");
 #pragma omp parallel for
 	for (size_t i = 0; i < N; i++) {
-#if 0
-		ppub.enc(sec.isZero(ctVec[i]) ? 1 : 0);
-#else
-		bool ok;
-		sec.dec(ctVec[i], &ok);
-		ppub.enc(c1Vec[i], ok ? 1 : 0);
-#endif
+		ppub.enc(c1Vec[i], sec.isZero(ctVec[i]) ? 1 : 0);
 	}
 	tm.end();
 	tm.begin("send");
